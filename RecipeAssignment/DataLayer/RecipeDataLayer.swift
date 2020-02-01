@@ -6,7 +6,7 @@
 //  Copyright © 2020 Black Dragon. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 //MARK:- RecipeDataLayerDelegate
@@ -87,11 +87,18 @@ private extension RecipeDataLayer {
     
     
     func hardCodeRecipe() {
-        
+        //hard code recipe, 1 recipe for each type
         recipes = recipeTypes.map { (type) -> Recipe in
-            let randNum = Int.random(in: 0 ..< 10)
-            return Recipe(recipeName: "Recipe \(randNum)", recipeType: type)
+            let randNum = Int.random(in: 0 ..< 4)
+            let imageName = String(format: SampleImageNameFormat.name, randNum + 1)
+            guard let image = UIImage(named: imageName) else {
+                fatalError("Hard code image not found")
+            }
+            let ingredients = ["Ingredient A", "Ingredient B", "Ingredient C"]
+            let steps = ["Step 1", "Step 2", "Step 3"]
+            
+            return Recipe(recipeName: "Recipe \(randNum)", recipeType: type, picture: image, ingredients: ingredients, steps: steps)
         }
-        print("recipes: \(recipes)")
+//        print("recipes: \(recipes)")
     }
 }

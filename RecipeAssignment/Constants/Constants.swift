@@ -14,4 +14,6 @@ struct TableCellID {
 }
 
 
-
+struct SampleImageNameFormat {
+    static let name = "sampleFood_%d"
+}

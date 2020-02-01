@@ -6,10 +6,13 @@
 //  Copyright © 2020 Black Dragon. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 struct Recipe {
     let recipeName : String
     let recipeType : String
+    let picture : UIImage
+    let ingredients : [String]
+    let steps : [String]
 }

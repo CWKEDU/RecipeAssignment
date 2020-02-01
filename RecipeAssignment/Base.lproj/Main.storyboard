@@ -39,7 +39,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Recipe Assignment" id="rgR-u6-Nec"/>
+                    <navigationItem key="navigationItem" title="Recipe Assignment" id="rgR-u6-Nec">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="m7Z-5F-l0O">
+                            <connections>
+                                <segue destination="EcL-aA-zCi" kind="show" id="FKZ-pl-iPD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="j59-kB-FdF" id="Ze9-VW-0Bx"/>
                     </connections>
@@ -48,7 +54,7 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="85.714285714285708"/>
         </scene>
-        <!--Add RecipeVC-->
+        <!--Add Recipe-->
         <scene sceneID="FeN-Ky-9E9">
             <objects>
                 <viewController id="EcL-aA-zCi" customClass="AddRecipeVC" customModule="RecipeAssignment" customModuleProvider="target" sceneMemberID="viewController">
@@ -56,18 +62,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RCX-RA-JsE">
-                                <rect key="frame" x="20" y="314" width="384" height="216"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </pickerView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="awN-5x-KRC">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vsh-Rf-qON" userLabel="ContentView">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="xYy-Oq-jzw" firstAttribute="top" secondItem="Vsh-Rf-qON" secondAttribute="top" id="7wE-hG-WdK"/>
+                                    <constraint firstItem="Vsh-Rf-qON" firstAttribute="trailing" secondItem="xYy-Oq-jzw" secondAttribute="trailing" id="Af0-7a-vxd"/>
+                                    <constraint firstItem="Vsh-Rf-qON" firstAttribute="width" secondItem="fKa-y4-5wL" secondAttribute="width" id="Cvo-ed-xdo"/>
+                                    <constraint firstItem="Vsh-Rf-qON" firstAttribute="bottom" secondItem="xYy-Oq-jzw" secondAttribute="bottom" id="K3D-BU-0yM"/>
+                                    <constraint firstItem="fKa-y4-5wL" firstAttribute="bottom" secondItem="Vsh-Rf-qON" secondAttribute="bottom" placeholder="YES" id="PME-BE-jtx"/>
+                                    <constraint firstItem="xYy-Oq-jzw" firstAttribute="leading" secondItem="Vsh-Rf-qON" secondAttribute="leading" id="S9Z-m7-o1k"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="xYy-Oq-jzw"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="fKa-y4-5wL"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="awN-5x-KRC" firstAttribute="leading" secondItem="ui5-12-DeR" secondAttribute="leading" id="B6I-g0-vMA"/>
+                            <constraint firstItem="awN-5x-KRC" firstAttribute="top" secondItem="ui5-12-DeR" secondAttribute="top" id="J0q-Qn-1LE"/>
+                            <constraint firstItem="ui5-12-DeR" firstAttribute="bottom" secondItem="awN-5x-KRC" secondAttribute="bottom" id="e0s-uf-53L"/>
+                            <constraint firstItem="ui5-12-DeR" firstAttribute="trailing" secondItem="awN-5x-KRC" secondAttribute="trailing" id="oV2-6m-Ma4"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="ui5-12-DeR"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Add Recipe" id="GUe-Af-ogJ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="9Gx-bh-Dws"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Uvn-EI-b3k">
+                            <connections>
+                                <action selector="rightBarBtnClicked:" destination="EcL-aA-zCi" id="qaf-Il-6CK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="contentView" destination="Vsh-Rf-qON" id="sty-d1-dwF"/>
+                        <outlet property="rightBarBtn" destination="Uvn-EI-b3k" id="9AF-kf-Q7z"/>
+                        <outlet property="scrollView" destination="awN-5x-KRC" id="cSD-MD-EKm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lMf-G0-emt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1774" y="86"/>
+            <point key="canvasLocation" x="1808.6956521739132" y="85.714285714285708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uy6-2D-2tV">

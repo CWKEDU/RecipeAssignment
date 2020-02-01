@@ -1,8 +1,7 @@
 <RecipeData>
-    <RecipeType>Recipe Type A</RecipeType>
-    <RecipeType>Recipe Type B</RecipeType>
-    <RecipeType>Recipe Type C</RecipeType>
-    <RecipeType>Recipe Type D</RecipeType>
-    <RecipeType>Recipe Type E</RecipeType>
+    <RecipeType>Type A</RecipeType>
+    <RecipeType>Type B</RecipeType>
+    <RecipeType>Type C</RecipeType>
+    <RecipeType>Type D</RecipeType>
 </RecipeData>
 

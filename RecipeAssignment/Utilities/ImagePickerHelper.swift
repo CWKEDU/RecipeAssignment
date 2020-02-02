@@ -17,6 +17,14 @@ enum ImagePickerHelperError : Error {
 
 
 
+//MARK:- Delegate
+protocol ImagePickerHelperDelegate : NSObject {
+    func imageResult(image : UIImage?, error : ImagePickerHelperError?)
+}
+
+
+
+
 //MARK:- Class Main
 class ImagePickerHelper : NSObject {
     
@@ -27,11 +35,7 @@ class ImagePickerHelper : NSObject {
         return pickerController
     }()
     private var vc : UIViewController?
-    private var image : UIImage?
-    private var error : ImagePickerHelperError?
-    
-    private lazy var semaphore : DispatchSemaphore = DispatchSemaphore(value: 0)
-    
+    weak var delegate : ImagePickerHelperDelegate?
 }
 
 
@@ -39,28 +43,11 @@ class ImagePickerHelper : NSObject {
 //MARK:- Main Call Function
 extension ImagePickerHelper {
     
-    func showPickImageOption(vc : UIViewController) throws -> UIImage {
+    func showPickImageOption(vc : UIViewController) {
         self.vc = vc
-        self.image = nil
-        self.error = nil
-
-        //show image picker option
         DispatchQueue.main.async {
             self.showAddImageOption()
         }
-        
-        //wait for result
-        _ = semaphore.wait(timeout: .distantFuture)
-        
-        if let err = error {
-            throw err
-        }
-        
-        guard let image = image else {
-            throw ImagePickerHelperError.FailGetImage("Image nil")
-        }
-        
-        return image
     }
     
 }
@@ -117,8 +104,7 @@ private extension ImagePickerHelper {
     
     
     func setGetImageFailError(message : String) {
-        error = ImagePickerHelperError.FailGetImage(message)
-        semaphore.signal()
+        delegate?.imageResult(image: nil, error: ImagePickerHelperError.FailGetImage(message))
     }
 }
 
@@ -140,13 +126,12 @@ extension ImagePickerHelper : UIImagePickerControllerDelegate {
             return
         }
         
-        self.image = image
-        semaphore.signal()
+        delegate?.imageResult(image: image, error: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.error = ImagePickerHelperError.UserCancelled("User cancelled")
-        semaphore.signal()
+        picker.dismiss(animated: true, completion: nil)
+        delegate?.imageResult(image: nil, error: ImagePickerHelperError.UserCancelled("User cancelled"))
     }
 }
 

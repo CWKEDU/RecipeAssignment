@@ -249,9 +249,7 @@ extension ViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCellID.RecipeCell, for: indexPath) as? UITableViewCell else {
-            fatalError("Table view cell not set up correctly")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableCellID.RecipeCell, for: indexPath)
         
         let recipe = recipes[indexPath.row]
         cell.textLabel?.text = recipe.recipeName

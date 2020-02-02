@@ -118,7 +118,7 @@ extension PlaceholderTextView {
     
     //get final text setted before submit
     func getSetText() -> String? {
-        if isEmpty {
+        if isEmpty || text.isEmpty {
             return nil
         }
         return text

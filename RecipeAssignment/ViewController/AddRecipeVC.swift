@@ -71,7 +71,11 @@ class AddRecipeVC: UIViewController {
     }
     
     //image picker
-    private lazy var imagePickerHelper = ImagePickerHelper()
+    private lazy var imagePickerHelper : ImagePickerHelper = {
+        let helper = ImagePickerHelper()
+        helper.delegate = self
+        return helper
+    }()
     
     //for setting new image ratio
     private var imageRatioConstraint : NSLayoutConstraint? = nil
@@ -119,10 +123,8 @@ class AddRecipeVC: UIViewController {
     private lazy var recipeImgBtn : ImageButton = {
         //init with a button
         let selectBtn = ImageButton()
-        //set on click listener
-        if editEnable {
-            selectBtn.addTarget(self, action: #selector(setRecipeImage), for: .touchUpInside)
-        }
+        selectBtn.addTarget(self, action: #selector(setRecipeImage), for: .touchUpInside)
+        selectBtn.isUserInteractionEnabled = editEnable
         return selectBtn
     }()
     
@@ -401,21 +403,7 @@ private extension AddRecipeVC {
     
     
     @objc func setRecipeImage(sender : ImageButton) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                let image = try self.imagePickerHelper.showPickImageOption(vc: self)
-                
-                //update btn constraint ratio
-                self.updateImageBtnRatio(imgSize: image.size)
-                self.recipeImgBtn.updateImg(image: image)
-            } catch ImagePickerHelperError.FailGetImage(let errMsg) {
-                self.showSimpleAlert(title: "Get Image Error", message: errMsg)
-            } catch ImagePickerHelperError.UserCancelled(_) {
-                //do nothing
-            } catch {
-                self.showSimpleAlert(title: "Unexpected Error", message: error.localizedDescription)
-            }
-        }
+        self.imagePickerHelper.showPickImageOption(vc: self)
     }
     
     func updateImageBtnRatio(imgSize : CGSize) {
@@ -665,5 +653,32 @@ extension AddRecipeVC : RecipeDataLayerDelegate{
         }
         //pop back to recipe list
         navigationController?.popViewController(animated: true)
+    }
+}
+
+
+
+
+//MARK:- ImagePickerHelperDelegate
+extension AddRecipeVC : ImagePickerHelperDelegate {
+    func imageResult(image: UIImage?, error: ImagePickerHelperError?) {
+        if let err = error {
+            switch err {
+            case .FailGetImage(let errMsg):
+                self.showSimpleAlert(title: "Get Image Error", message: errMsg)
+                return
+            case .UserCancelled(_):
+                return
+            }
+        }
+        
+        guard let image = image else {
+            self.showSimpleAlert(title: "Get Image Error", message: "Image missing from result")
+            return
+        }
+        
+        //update btn constraint ratio
+        self.updateImageBtnRatio(imgSize: image.size)
+        self.recipeImgBtn.updateImg(image: image)
     }
 }

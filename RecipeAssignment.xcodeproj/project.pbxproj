@@ -16,6 +16,7 @@
 		700975CE23E60BCA00424CDD /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975CD23E60BCA00424CDD /* UIView+Extension.swift */; };
 		700975D023E61B2E00424CDD /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975CF23E61B2E00424CDD /* FileUtility.swift */; };
 		7037E4CA23E5AD3200AE9A3B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7037E4C923E5AD3200AE9A3B /* Constants.swift */; };
+		70B3979023E6C51E005B29FD /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B3978F23E6C51E005B29FD /* RealmUtil.swift */; };
 		70CFA4A623E59117001138BB /* RecipeDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CFA4A523E59117001138BB /* RecipeDataLayer.swift */; };
 		70CFA4A923E5A60C001138BB /* AddRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CFA4A823E5A60C001138BB /* AddRecipeVC.swift */; };
 		70EF792A23E49AF800F5974A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EF792923E49AF800F5974A /* AppDelegate.swift */; };
@@ -41,6 +42,7 @@
 		700975CD23E60BCA00424CDD /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		700975CF23E61B2E00424CDD /* FileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtility.swift; sourceTree = "<group>"; };
 		7037E4C923E5AD3200AE9A3B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		70B3978F23E6C51E005B29FD /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
 		70CFA4A523E59117001138BB /* RecipeDataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDataLayer.swift; sourceTree = "<group>"; };
 		70CFA4A823E5A60C001138BB /* AddRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeVC.swift; sourceTree = "<group>"; };
 		70EF792623E49AF800F5974A /* RecipeAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +192,7 @@
 		70EF794323E49C5C00F5974A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				70B3978F23E6C51E005B29FD /* RealmUtil.swift */,
 				70EF794423E49C7900F5974A /* ParseUtil.swift */,
 				700975C923E5EB0000424CDD /* ImagePickerHelper.swift */,
 				700975CF23E61B2E00424CDD /* FileUtility.swift */,
@@ -337,6 +340,7 @@
 				70EF792C23E49AF800F5974A /* SceneDelegate.swift in Sources */,
 				700975C523E5E84600424CDD /* PlaceholderTextView.swift in Sources */,
 				7037E4CA23E5AD3200AE9A3B /* Constants.swift in Sources */,
+				70B3979023E6C51E005B29FD /* RealmUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,12 +7,22 @@
 //
 
 import UIKit
+import RealmSwift
 
-
-struct Recipe : Equatable {
-    let recipeName : String
-    let recipeType : String
-    let picturePath : String
-    let ingredients : String
-    let steps : String
+class Recipe : Object {
+    @objc dynamic var recipeName : String = ""
+    @objc dynamic var recipeType : String = ""
+    @objc dynamic var picturePath : String = ""
+    @objc dynamic var ingredients : String = ""
+    @objc dynamic var steps : String = ""
+    
+    convenience init(name : String, type : String, picPath : String, ingredients : String, steps : String) {
+        self.init()
+        self.recipeName = name
+        self.recipeType = type
+        self.picturePath = picPath
+        self.ingredients = ingredients
+        self.steps = steps
+    }
+    
 }

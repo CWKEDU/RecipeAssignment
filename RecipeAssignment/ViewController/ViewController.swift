@@ -149,6 +149,24 @@ private extension ViewController {
 
 //MARK:- RecipeDataLayerDelegate
 extension ViewController : RecipeDataLayerDelegate {
+    func readRecipeResult(recipes: [Recipe], err: RecipeDataLayerErr?) {
+        if let err = err {
+            showSimpleAlert(title: "Fail Load Recipe", message: err.localizedDescription)
+        }
+    }
+    
+    func addRecipeResult(recipe: Recipe?, err: RecipeDataLayerErr?) {
+       //not using
+    }
+    
+    func updateRecipeResult(err: RecipeDataLayerErr?) {
+        //not using
+    }
+    
+    func deleteRecipeResult(err: RecipeDataLayerErr?) {
+        //not using
+    }
+    
     func recipesChanges(recipes: [Recipe]) {
         //trigger search again with new dataset
         filterResult()

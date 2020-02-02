@@ -7,5 +7,6 @@ target 'RecipeAssignment' do
 
   # Pods for RecipeAssignment
   pod 'IQKeyboardManagerSwift'
+  pod 'RealmSwift'
   
 end

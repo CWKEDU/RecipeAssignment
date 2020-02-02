@@ -270,6 +270,11 @@ class AddRecipeVC: UIViewController {
     }
     
   
+    override func viewDidAppear(_ animated: Bool) {
+           super.viewDidAppear(animated)
+           //register to listen to new recipe
+           recipeDataLayer.delegate = self
+       }
     
     
     
@@ -494,11 +499,6 @@ private extension AddRecipeVC {
         
         
         recipeDataLayer.saveRecipe(name: recipeName, type: type, image: recipeImg, ingredients: ingredients, steps: steps)
-        
-        showAlert(title: "Add OK", message: "Add recipe success") {
-            self.navigationController?.popViewController(animated: true)
-        }
-        
     }
         
         
@@ -566,12 +566,6 @@ private extension AddRecipeVC {
         
         //call data layer to replace
         recipeDataLayer.updateRecipe(oldRecipe: oldRecipe, name: recipeName, type: type, image: recipeImg, ingredients: ingredients, steps: steps)
-        
-        //change state
-        editState = .view
-        
-        //show update ok
-        showSimpleAlert(title: "Update Success", message: "Update recipe success!")
     }
     
     
@@ -583,9 +577,6 @@ private extension AddRecipeVC {
         
         //pass in recipe to data layer to delete
         recipeDataLayer.deleteRecipe(oldRecipe: oldRecipe)
-        
-        //pop back to recipe list
-        navigationController?.popViewController(animated: true)
     }
     
     
@@ -616,5 +607,63 @@ extension AddRecipeVC : UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return recipeTypes[row]
+    }
+}
+
+
+
+//MARK:- RecipeDataLayerDelegate
+extension AddRecipeVC : RecipeDataLayerDelegate{
+    
+    func recipesChanges(recipes: [Recipe]) {
+        //not using
+    }
+    
+    
+    func recipeTypeChanges(recipeTypes: [String]) {
+        //reload picker view
+        self.recipeTypes = recipeTypes
+        pickerView.reloadAllComponents()
+    }
+    
+    
+    func readRecipeResult(recipes: [Recipe], err: RecipeDataLayerErr?) {
+        //not using
+    }
+    
+    
+    func addRecipeResult(recipe: Recipe?, err: RecipeDataLayerErr?) {
+        if let err = err {
+            showSimpleAlert(title: "Fail Add Recipe", message: err.localizedDescription)
+            return
+        }
+        //reload current recipe, update state
+        showAlert(title: "Add OK", message: "Add recipe success") {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    
+    func updateRecipeResult(err: RecipeDataLayerErr?) {
+        if let err = err {
+            showSimpleAlert(title: "Fail Update Recipe", message: err.localizedDescription)
+            return
+        }
+        
+        //change state back to view
+        editState = .view
+        
+        //show update ok
+        showSimpleAlert(title: "Update Success", message: "Update recipe success!")
+    }
+    
+    
+    func deleteRecipeResult(err: RecipeDataLayerErr?) {
+        if let err = err {
+            showSimpleAlert(title: "Fail Delete Recipe", message: err.localizedDescription)
+            return
+        }
+        //pop back to recipe list
+        navigationController?.popViewController(animated: true)
     }
 }

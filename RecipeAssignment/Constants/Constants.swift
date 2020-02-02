@@ -17,3 +17,13 @@ struct TableCellID {
 struct SampleImageNameFormat {
     static let name = "sampleFood_%d"
 }
+
+
+struct SegueID {
+    static let ToViewDetail = "ToViewDetail"
+}
+
+
+struct StoryboardID {
+    static let AddRecipeVC = "AddRecipeVC"
+}

@@ -9,10 +9,10 @@
 import UIKit
 
 
-struct Recipe {
+struct Recipe : Equatable {
     let recipeName : String
     let recipeType : String
-    let picture : UIImage
-    let ingredients : [String]
-    let steps : [String]
+    let picturePath : String
+    let ingredients : String
+    let steps : String
 }

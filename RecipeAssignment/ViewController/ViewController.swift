@@ -247,6 +247,15 @@ extension ViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selecteRecipeIndex = indexPath.row
         tableView.deselectRow(at: indexPath, animated: true)
+        
+    
+        guard let vc = storyboard?.instantiateViewController(identifier: StoryboardID.AddRecipeVC) as? AddRecipeVC else {
+            fatalError("Fail to get storyboard, check code")
+        }
+        vc.recipe = recipes[indexPath.row]
+        vc.editState = .view
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

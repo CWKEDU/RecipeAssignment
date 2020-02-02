@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		700975CA23E5EB0000424CDD /* ImagePickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975C923E5EB0000424CDD /* ImagePickerHelper.swift */; };
 		700975CC23E5F10600424CDD /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975CB23E5F10600424CDD /* UIViewController+Extension.swift */; };
 		700975CE23E60BCA00424CDD /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975CD23E60BCA00424CDD /* UIView+Extension.swift */; };
+		700975D023E61B2E00424CDD /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700975CF23E61B2E00424CDD /* FileUtility.swift */; };
 		7037E4CA23E5AD3200AE9A3B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7037E4C923E5AD3200AE9A3B /* Constants.swift */; };
 		70CFA4A623E59117001138BB /* RecipeDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CFA4A523E59117001138BB /* RecipeDataLayer.swift */; };
 		70CFA4A923E5A60C001138BB /* AddRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CFA4A823E5A60C001138BB /* AddRecipeVC.swift */; };
@@ -38,6 +39,7 @@
 		700975C923E5EB0000424CDD /* ImagePickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerHelper.swift; sourceTree = "<group>"; };
 		700975CB23E5F10600424CDD /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		700975CD23E60BCA00424CDD /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		700975CF23E61B2E00424CDD /* FileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtility.swift; sourceTree = "<group>"; };
 		7037E4C923E5AD3200AE9A3B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		70CFA4A523E59117001138BB /* RecipeDataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDataLayer.swift; sourceTree = "<group>"; };
 		70CFA4A823E5A60C001138BB /* AddRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeVC.swift; sourceTree = "<group>"; };
@@ -74,7 +76,6 @@
 				7A93AD118873A9CAE8ABC7F9 /* Pods-RecipeAssignment.debug.xcconfig */,
 				544704645F5888C20D811F8D /* Pods-RecipeAssignment.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -191,6 +192,7 @@
 			children = (
 				70EF794423E49C7900F5974A /* ParseUtil.swift */,
 				700975C923E5EB0000424CDD /* ImagePickerHelper.swift */,
+				700975CF23E61B2E00424CDD /* FileUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -324,6 +326,7 @@
 				70CFA4A623E59117001138BB /* RecipeDataLayer.swift in Sources */,
 				700975CE23E60BCA00424CDD /* UIView+Extension.swift in Sources */,
 				70EF792A23E49AF800F5974A /* AppDelegate.swift in Sources */,
+				700975D023E61B2E00424CDD /* FileUtility.swift in Sources */,
 				700975CC23E5F10600424CDD /* UIViewController+Extension.swift in Sources */,
 				70EF794723E4AC6B00F5974A /* Recipe.swift in Sources */,
 				700975CA23E5EB0000424CDD /* ImagePickerHelper.swift in Sources */,

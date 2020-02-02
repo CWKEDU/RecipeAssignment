@@ -29,7 +29,7 @@ class AddRecipeVC: UIViewController {
     }()
     var recipe : Recipe? = nil {
         didSet{
-            //update view here
+            refreshRecipe()
         }
     }
     
@@ -49,6 +49,16 @@ class AddRecipeVC: UIViewController {
             self.titleTextView.isEditable = editEnable
             self.ingredientTxtView.isEditable = editEnable
             self.stepTxtView.isEditable = editEnable
+            self.recipeImgBtn.isUserInteractionEnabled = editEnable
+            
+            switch editState {
+            case .add:
+                rightBarBtn.title = "Add"
+            case .edit:
+                rightBarBtn.title = "Done"
+            case .view:
+                rightBarBtn.title = "Edit"
+            }
         }
     }
     private var editEnable : Bool {
@@ -70,8 +80,6 @@ class AddRecipeVC: UIViewController {
     
     //MARK:- Outlets
     //interface builder
-    @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var rightBarBtn: UIBarButtonItem!
     
     
@@ -84,8 +92,30 @@ class AddRecipeVC: UIViewController {
         return pickerView
     }()
     
+    //scroll view
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.addSubview(contentView)
+        contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: 0).isActive = true
+        
+        contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 0).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.contentLayoutGuide.widthAnchor, constant: 0).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
+        scrollView.layoutIfNeeded()
+        return scrollView
+    }()
+    private lazy var contentView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
-    //banner image with button
+    
+    
+    //top image with button
     private lazy var recipeImgBtn : ImageButton = {
         //init with a button
         let selectBtn = ImageButton()
@@ -225,12 +255,23 @@ class AddRecipeVC: UIViewController {
     
     
     //MARK:- Overwrites Lifecycle
+    
+    convenience init(recipe : Recipe) {
+        self.init()
+        self.recipe = recipe
+    }
+    
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        layoutViews()
         contentView.setAutoDismissKeyboard()
-        
+        layoutViews()
     }
+    
+  
+    
+    
     
     
    
@@ -241,9 +282,11 @@ class AddRecipeVC: UIViewController {
             //if is add mode, directly add new recipe
             addRecipe()
         case .view:
-            print("not yet implement")
+            //prompt optiion to delete or edit
+            showEditOptions()
         case .edit:
-            print("not yet implement")
+            //show confirm update or reset
+            showConfirmUpdate()
         }
         
         
@@ -278,11 +321,20 @@ private extension AddRecipeVC {
         let mainContentPadding : CGFloat = 15
         let imageRatio_WidthToHeight : CGFloat = 320/640
         
+        view.addSubview(scrollView)
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
         //add contents to scrollview content
+        print("recipeImgBtn: \(recipeImgBtn)")
+        print("contentView: \(contentView)")
+        
         contentView.addSubview(recipeImgBtn)
-        recipeImgBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: mainContentPadding).isActive = true
-        recipeImgBtn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: mainContentPadding).isActive = true
-        recipeImgBtn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -mainContentPadding).isActive = true
+        recipeImgBtn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        recipeImgBtn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
+        recipeImgBtn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0).isActive = true
         imageRatioConstraint = recipeImgBtn.heightAnchor.constraint(equalTo: recipeImgBtn.widthAnchor, multiplier: imageRatio_WidthToHeight)
         imageRatioConstraint?.isActive = true
         
@@ -322,6 +374,26 @@ private extension AddRecipeVC {
     }
     
     
+    func refreshRecipe() {
+        guard let rp = recipe else {
+            return
+        }
+        //update view here: title, type, image, ingredient, step
+        titleTextView.text = rp.recipeName
+        setRecipeTypeBtn.setTitle(rp.recipeType, for: .normal)
+        ingredientTxtView.text = rp.ingredients
+        stepTxtView.text = rp.steps
+        
+        do {
+            let img = try recipeDataLayer.getRecipeImage(imagePath: rp.picturePath)
+            updateImageBtnRatio(imgSize: img.size)
+            recipeImgBtn.updateImg(image: img)
+        } catch {
+            print("Fail to load image")
+        }
+    }
+    
+    
     
     @objc func setRecipeImage(sender : ImageButton) {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -329,14 +401,7 @@ private extension AddRecipeVC {
                 let image = try self.imagePickerHelper.showPickImageOption(vc: self)
                 
                 //update btn constraint ratio
-                DispatchQueue.main.async {
-                    let newRatio : CGFloat = image.size.height / image.size.width
-                    self.imageRatioConstraint?.isActive = false
-                    self.imageRatioConstraint = self.recipeImgBtn.heightAnchor.constraint(equalTo: self.recipeImgBtn.widthAnchor, multiplier: newRatio)
-                    self.imageRatioConstraint?.isActive = true
-                    self.view.layoutIfNeeded()
-                }
-                
+                self.updateImageBtnRatio(imgSize: image.size)
                 self.recipeImgBtn.updateImg(image: image)
             } catch ImagePickerHelperError.FailGetImage(let errMsg) {
                 self.showSimpleAlert(title: "Get Image Error", message: errMsg)
@@ -347,6 +412,17 @@ private extension AddRecipeVC {
             }
         }
     }
+    
+    func updateImageBtnRatio(imgSize : CGSize) {
+        DispatchQueue.main.async {
+            let newRatio : CGFloat = imgSize.height / imgSize.width
+            self.imageRatioConstraint?.isActive = false
+            self.imageRatioConstraint = self.recipeImgBtn.heightAnchor.constraint(equalTo: self.recipeImgBtn.widthAnchor, multiplier: newRatio)
+            self.imageRatioConstraint?.isActive = true
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     
     
     func updateSetRecipeBtnState(btn : UIButton) {
@@ -362,6 +438,7 @@ private extension AddRecipeVC {
     
     
     @objc func showRecipeTypePickerView() {
+        
         let vc = UIViewController()
         vc.view.addSubview(self.pickerView)
         var constraints : [NSLayoutConstraint] = []
@@ -382,6 +459,7 @@ private extension AddRecipeVC {
         let editRadiusAlert = UIAlertController(title: "Choose distance", message: "", preferredStyle: .alert)
         editRadiusAlert.setValue(vc, forKey: "contentViewController")
         editRadiusAlert.addAction(UIAlertAction(title: "Done", style: .default, handler: { action in
+            self.selectedRecipeType = self.pickerView.selectedRow(inComponent: 0)
             dismissPickerView()
         }))
         editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
@@ -415,13 +493,100 @@ private extension AddRecipeVC {
         }
         
         
-        showSimpleAlert(title: "Check OK", message: "Proceed")
+        recipeDataLayer.saveRecipe(name: recipeName, type: type, image: recipeImg, ingredients: ingredients, steps: steps)
         
-        
+        showAlert(title: "Add OK", message: "Add recipe success") {
+            self.navigationController?.popViewController(animated: true)
+        }
         
     }
         
         
+    func showEditOptions() {
+        let alert = UIAlertController(title: "Edit Options", message: "Please choose", preferredStyle: .actionSheet)
+        let actionEdit = UIAlertAction(title: "Edit", style: .default) { (action) in
+            self.editState = .edit
+        }
+        let actionDelete = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+            self.deleteRecipe()
+        }
+        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(actionEdit)
+        alert.addAction(actionDelete)
+        alert.addAction(actionCancel)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    func showConfirmUpdate() {
+        let alert = UIAlertController(title: "Commit Update?", message: nil, preferredStyle: .actionSheet)
+        let actionEdit = UIAlertAction(title: "Commit Update", style: .default) { (action) in
+            self.updateRecipe()
+        }
+        let actionDelete = UIAlertAction(title: "Undo All", style: .destructive) { (action) in
+            self.refreshRecipe()
+            self.editState = .view
+        }
+        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(actionEdit)
+        alert.addAction(actionDelete)
+        alert.addAction(actionCancel)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    func updateRecipe() {
+        //validate: old recipe, Recipe Name, recipeType, picture, ingredients, steps
+        guard let oldRecipe = recipe else {
+            fatalError("Old recipe not set, check logic")
+        }
+        guard let recipeImg = recipeImgBtn.getImage() else {
+            showSimpleAlert(title: "Image Empty", message: "Must set image!")
+            return
+        }
+        guard let recipeName = titleTextView.getSetText() else {
+            showSimpleAlert(title: "Title Empty", message: "Must set title!")
+            return
+        }
+        guard let type = setRecipeTypeBtn.title(for: .normal),  recipeTypes.contains(type) else {
+            showSimpleAlert(title: "Invalid Type", message: "Invalid Recipe Type!")
+            return
+        }
+        guard let ingredients = ingredientTxtView.getSetText() else {
+            showSimpleAlert(title: "Ingredient Empty", message: "Must set ingredient!")
+            return
+        }
+        guard let steps = stepTxtView.getSetText() else {
+            showSimpleAlert(title: "Steps Empty", message: "Must set steps!")
+            return
+        }
+        
+        //call data layer to replace
+        recipeDataLayer.updateRecipe(oldRecipe: oldRecipe, name: recipeName, type: type, image: recipeImg, ingredients: ingredients, steps: steps)
+        
+        //change state
+        editState = .view
+        
+        //show update ok
+        showSimpleAlert(title: "Update Success", message: "Update recipe success!")
+    }
+    
+    
+    func deleteRecipe() {
+        //make sure old recipe available
+        guard let oldRecipe = recipe else {
+            fatalError("Old recipe not set, check logic")
+        }
+        
+        //pass in recipe to data layer to delete
+        recipeDataLayer.deleteRecipe(oldRecipe: oldRecipe)
+        
+        //pop back to recipe list
+        navigationController?.popViewController(animated: true)
+    }
     
     
 }
@@ -434,7 +599,7 @@ extension AddRecipeVC : UIPickerViewDelegate {
     //detect select
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 //        print("Selected recipe: \(recipeTypes[row])")
-        self.selectedRecipeType = row
+//        self.selectedRecipeType = row
     }
 }
 
